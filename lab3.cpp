@@ -3,53 +3,53 @@
 
 using namespace std;
 
-class Session {  // Базовый класс "Сеанс"
+class Session {  // базовый класс "Сеанс"
 protected:
     string date;
     string time;
     string movieTitle;
 
 public:
-    // Конструкторы
-    Session() {  // Конструктор по умолчанию
+    // конструкторы
+    Session() {  // конструктор по умолчанию
         date = "01.01.1970";
         time = "00:00";
         movieTitle = "No title";
         cout << "Session: Default constructor" << endl;
     }
     
-    Session(string d, string t, string mt) {  // Конструктор с параметрами
+    Session(string d, string t, string mt) {  // конструктор с параметрами
         date = d;
         time = t;
         movieTitle = mt;
         cout << "Session: Constructor with parameters" << endl;
     }
     
-    Session(const Session &s) {  // Конструктор копирования
+    Session(const Session &s) {  // конструктор копирования
         date = s.date;
         time = s.time;
         movieTitle = s.movieTitle;
         cout << "Session: Copy constructor" << endl;
     }
     
-    // Деструктор
+    // деструктор
     virtual ~Session() {
         cout << "Session: Destructor" << endl;
     }
 
-    // Методы для получения данных
+    // методы для получения данных
     string getDate() { return date; }
     string getTime() { return time; }
     string getMovieTitle() { return movieTitle; }
 
-    // Методы для установки данных
+    // методы для установки данных
     void setData(string d, string t, string mt) {
         date = d;
         time = t;
         movieTitle = mt;
     }
 
-    // Виртуальный метод для вывода информации
+    // виртуальный метод для вывода информации
     virtual void printInfo() {
         cout << "Session Info:" << endl;
         cout << "  Movie: " << movieTitle << endl;
@@ -58,7 +58,7 @@ public:
     }
 };
 
-class Booking : public Session {  // Класс-наследник "Бронирование"
+class Booking : public Session {  // класс-наследник "Бронирование"
 private:
     string customerName;
     string phoneNumber;
@@ -66,7 +66,7 @@ private:
     bool isConfirmed;
 
 public:
-    // Конструкторы
+    // конструкторы
     Booking() : Session() {
         customerName = "No name";
         phoneNumber = "No phone";
@@ -92,17 +92,17 @@ public:
         cout << "Booking: Copy constructor" << endl;
     }
     
-    // Деструктор
+    // деструктор
     ~Booking() {
         cout << "Booking: Destructor" << endl;
     }
 
-    // Методы
+    // методы
     void confirmBooking() {
         isConfirmed = true;
     }
 
-    // Переопределение метода вывода информации
+    // переопределение метода вывода информации
     void printInfo() override {
         Session::printInfo();
         cout << "  Type: Booking" << endl;
@@ -113,14 +113,14 @@ public:
     }
 };
 
-class PaidTicket : public Session {  // Класс-наследник "Оплаченный билет"
+class PaidTicket : public Session {  // класс-наследник "Оплаченный билет"
 private:
     string ticketNumber;
     float price;
     string paymentMethod;
 
 public:
-    // Конструкторы
+    // конструкторы
     PaidTicket() : Session() {
         ticketNumber = "000000";
         price = 0.0f;
@@ -143,12 +143,12 @@ public:
         cout << "PaidTicket: Copy constructor" << endl;
     }
     
-    // Деструктор
+    // деструктор
     ~PaidTicket() {
         cout << "PaidTicket: Destructor" << endl;
     }
 
-    // Переопределение метода вывода информации
+    // переопределение метода вывода информации
     void printInfo() override {
         Session::printInfo();
         cout << "  Type: Paid Ticket" << endl;
@@ -158,15 +158,15 @@ public:
     }
 };
 
-class Cinema {  // Основной класс "Кинотеатр"
+class Cinema {  // основной класс "Кинотеатр"
 private:
     string name;
     string address;
-    Session* sessions[10];  // Массив указателей на базовый класс
+    Session* sessions[10];  // массив указателей на базовый класс
     int sessionCount = 0;
 
 public:
-    // Конструкторы и деструкторы (остаются без изменений)
+    // конструкторы и деструкторы
     Cinema() {
         name = "No name";
         address = "No address";
@@ -180,14 +180,14 @@ public:
     }
     
     ~Cinema() {
-        // Освобождаем память для всех сеансов
+        // освобождаем память для всех сеансов
         for (int i = 0; i < sessionCount; i++) {
             delete sessions[i];
         }
         cout << "Cinema: Destructor" << endl;
     }
 
-    // Методы для работы с сеансами (адаптированы для работы с указателями)
+    // методы для работы с сеансами
     void addSession(Session* s) {
         if (sessionCount < 10) {
             sessions[sessionCount] = s;
@@ -209,23 +209,23 @@ public:
 
 int main() {
     cout << "============= Step 1: Creating objects =============" << endl;
-    // Создаем объекты базового класса
+    // создаем объекты базового класса
     Session session1;
     Session session2("25.05.2023", "19:00", "Guardians of the Galaxy Vol. 3");
     
-    // Создаем объекты классов-наследников
+    // создаем объекты классов-наследников
     Booking booking1("26.05.2023", "20:30", "Fast X", "Ivan Ivanov", "+79123456789", 15);
     PaidTicket ticket1("27.05.2023", "15:45", "The Little Mermaid", "T123456", 350.0f, "Credit Card");
     
     cout << "\n============= Step 2: Working with base class array =============" << endl;
-    // Создаем массив базового класса (указателей)
+    // создаем массив базового класса (указателей)
     Session* sessionArray[4];
     sessionArray[0] = new Session(session1);
     sessionArray[1] = new Session(session2);
     sessionArray[2] = new Booking(booking1);
     sessionArray[3] = new PaidTicket(ticket1);
     
-    // Выводим информацию через массив базового класса
+    // выводим информацию через массив базового класса
     for (int i = 0; i < 4; i++) {
         cout << "Element #" << i+1 << ":" << endl;
         sessionArray[i]->printInfo();
@@ -233,12 +233,12 @@ int main() {
     }
     
     cout << "\n============= Step 3: Working with derived class array =============" << endl;
-    // Создаем массив класса-наследника Booking
+    // создаем массив класса-наследника Booking
     Booking bookingArray[2];
     bookingArray[0] = booking1;
     bookingArray[1] = Booking("28.05.2023", "22:00", "John Wick 4", "Petr Petrov", "+79876543210", 22);
     
-    // Выводим информацию через массив класса-наследника
+    // выводим информацию через массив класса-наследника
     for (int i = 0; i < 2; i++) {
         cout << "Booking #" << i+1 << ":" << endl;
         bookingArray[i].printInfo();
@@ -253,7 +253,7 @@ int main() {
     cinema.printAllSessions();
     
     cout << "============= Cleaning up =============" << endl;
-    // Освобождаем память
+    // освобождаем память
     for (int i = 0; i < 4; i++) {
         delete sessionArray[i];
     }
