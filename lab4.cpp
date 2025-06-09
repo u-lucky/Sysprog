@@ -4,62 +4,62 @@
 
 using namespace std;
 
-class Session {  // Абстрактный базовый класс "Сеанс"
+class Session {  // абстрактный базовый класс "Сеанс"
 protected:
     string date;
     string time;
     string movieTitle;
 
 public:
-    // Конструкторы
-    Session() {  // Конструктор по умолчанию
+    // конструкторы
+    Session() {  // конструктор по умолчанию
         date = "01.01.1970";
         time = "00:00";
         movieTitle = "No title";
         cout << "Session: Default constructor" << endl;
     }
     
-    Session(string d, string t, string mt) {  // Конструктор с параметрами
+    Session(string d, string t, string mt) {  // конструктор с параметрами
         date = d;
         time = t;
         movieTitle = mt;
         cout << "Session: Constructor with parameters" << endl;
     }
     
-    Session(const Session &s) {  // Конструктор копирования
+    Session(const Session &s) {  // конструктор копирования
         date = s.date;
         time = s.time;
         movieTitle = s.movieTitle;
         cout << "Session: Copy constructor" << endl;
     }
     
-    // Виртуальный деструктор
+    // виртуальный деструктор
     virtual ~Session() {
         cout << "Session: Destructor" << endl;
     }
 
-    // Методы для получения данных
+    // методы для получения данных
     string getDate() const { return date; }
     string getTime() const { return time; }
     string getMovieTitle() const { return movieTitle; }
 
-    // Методы для установки данных
+    // методы для установки данных
     void setData(string d, string t, string mt) {
         date = d;
         time = t;
         movieTitle = mt;
     }
 
-    // Чисто виртуальная функция (делаем класс абстрактным)
+    // чисто виртуальная функция (делаем класс абстрактным)
     virtual void printDetailedInfo() const = 0;
     
-    // Виртуальная функция для базовой информации
+    // виртуальная функция для базовой информации
     virtual void printBasicInfo() const {
         cout << "Movie: " << movieTitle << " (Date: " << date << ", Time: " << time << ")";
     }
 };
 
-class Booking : public Session {  // Класс-наследник "Бронирование"
+class Booking : public Session {  // класс-наследник "Бронирование"
 private:
     string customerName;
     string phoneNumber;
@@ -67,7 +67,7 @@ private:
     bool isConfirmed;
 
 public:
-    // Конструкторы
+    // конструкторы
     Booking() : Session() {
         customerName = "No name";
         phoneNumber = "No phone";
@@ -93,17 +93,17 @@ public:
         cout << "Booking: Copy constructor" << endl;
     }
     
-    // Деструктор
+    // деструктор
     ~Booking() {
         cout << "Booking: Destructor" << endl;
     }
 
-    // Методы
+    // методы
     void confirmBooking() {
         isConfirmed = true;
     }
 
-    // Переопределение чисто виртуальной функции
+    // переопределение чисто виртуальной функции
     void printDetailedInfo() const override {
         cout << "=== Booking Details ===" << endl;
         printBasicInfo();
@@ -114,14 +114,14 @@ public:
     }
 };
 
-class PaidTicket : public Session {  // Класс-наследник "Оплаченный билет"
+class PaidTicket : public Session {  // класс-наследник "Оплаченный билет"
 private:
     string ticketNumber;
     float price;
     string paymentMethod;
 
 public:
-    // Конструкторы
+    // конструкторы
     PaidTicket() : Session() {
         ticketNumber = "000000";
         price = 0.0f;
@@ -144,12 +144,12 @@ public:
         cout << "PaidTicket: Copy constructor" << endl;
     }
     
-    // Деструктор
+    // деструктор
     ~PaidTicket() {
         cout << "PaidTicket: Destructor" << endl;
     }
 
-    // Переопределение чисто виртуальной функции
+    // переопределение чисто виртуальной функции
     void printDetailedInfo() const override {
         cout << "=== Paid Ticket Details ===" << endl;
         printBasicInfo();
@@ -159,14 +159,14 @@ public:
     }
 };
 
-class Cinema {  // Основной класс "Кинотеатр"
+class Cinema {  // основной класс "Кинотеатр"
 private:
     string name;
     string address;
-    vector<Session*> sessions;  // Вектор указателей на базовый класс
+    vector<Session*> sessions;  // вектор указателей на базовый класс
 
 public:
-    // Конструкторы
+    // конструкторы
     Cinema() {
         name = "No name";
         address = "No address";
@@ -177,16 +177,16 @@ public:
         cout << "Cinema: Constructor with parameters" << endl;
     }
     
-    // Деструктор
+    // деструктор
     ~Cinema() {
-        // Освобождаем память для всех сеансов
+        // освобождаем память для всех сеансов
         for (auto session : sessions) {
             delete session;
         }
         cout << "Cinema: Destructor" << endl;
     }
 
-    // Методы для работы с сеансами
+    // методы для работы с сеансами
     void addSession(Session* s) {
         sessions.push_back(s);
     }
@@ -199,7 +199,7 @@ public:
         }
     }
     
-    // Метод для демонстрации полиморфизма
+    // метод для демонстрации полиморфизма
     void demonstratePolymorphism() const {
         cout << "\n=== Polymorphism Demonstration ===" << endl;
         for (auto session : sessions) {
@@ -212,10 +212,10 @@ public:
 
 int main() {
     cout << "============= Step 1: Creating objects =============" << endl;
-    // Не можем создать объект абстрактного класса Session
-    // Session session1;  // Ошибка компиляции
+    // не можем создать объект абстрактного класса Session
+    // Session session1;  // ошибка компиляции
     
-    // Создаем объекты классов-наследников
+    // создаем объекты классов-наследников
     Booking* booking1 = new Booking("26.05.2023", "20:30", "Fast X", 
                                   "Ivan Ivanov", "+79123456789", 15);
     PaidTicket* ticket1 = new PaidTicket("27.05.2023", "15:45", 
@@ -223,7 +223,7 @@ int main() {
                                        350.0f, "Credit Card");
     
     cout << "\n============= Step 2: Working with base class array =============" << endl;
-    // Создаем массив указателей на базовый класс
+    // создаем массив указателей на базовый класс
     vector<Session*> sessionArray;
     sessionArray.push_back(new Booking(*booking1));
     sessionArray.push_back(new PaidTicket(*ticket1));
@@ -232,7 +232,7 @@ int main() {
     sessionArray.push_back(new PaidTicket("29.05.2023", "12:00", "Avatar 2", 
                                         "T654321", 450.0f, "Online Payment"));
     
-    // Выводим информацию через массив базового класса (полиморфизм)
+    // выводим информацию через массив базового класса (полиморфизм)
     for (size_t i = 0; i < sessionArray.size(); ++i) {
         cout << "\nElement #" << i+1 << ":" << endl;
         sessionArray[i]->printDetailedInfo();
@@ -241,7 +241,7 @@ int main() {
     cout << "\n============= Step 3: Working with Cinema class =============" << endl;
     Cinema cinema("Star Cinema", "Main Street 123");
     
-    // Добавляем сеансы разных типов
+    // добавляем сеансы разных типов
     cinema.addSession(new Booking(*booking1));
     cinema.addSession(new PaidTicket(*ticket1));
     cinema.addSession(new Booking("30.05.2023", "18:15", "The Batman", 
@@ -249,14 +249,14 @@ int main() {
     cinema.addSession(new PaidTicket("31.05.2023", "21:30", "Dune", 
                                    "T987654", 400.0f, "Gift Card"));
     
-    // Выводим информацию о всех сеансах
+    // выводим информацию о всех сеансах
     cinema.printAllSessions();
     
-    // Демонстрируем полиморфизм
+    // демонстрируем полиморфизм
     cinema.demonstratePolymorphism();
     
     cout << "\n============= Cleaning up =============" << endl;
-    // Освобождаем память
+    // освобождаем память
     delete booking1;
     delete ticket1;
     
